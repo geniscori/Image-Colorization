@@ -9,14 +9,31 @@ from test import test
 
 from torchvision import transforms
 
-# Importem les clases
+# Importem les classes
 from models.models import *
 from utils.convert_2_grayscale import Convert2Grayscale
 import torch
 import os
 
-input_path = r'C:\Users\genis\Documents\uni\Tercer\SEMESTRE 2\Xarxes\Proyecto Nuestro\data\random_images'
-output_path = 'data/random_images/split_images'
+# Busquem la carpeta data
+script_dir = os.path.dirname(os.path.abspath(__file__))
+data_dir = os.path.join(script_dir, 'data')
+
+# Obtenim un llistat dels directoris de data
+subdirectories = [name for name in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir, name))]
+
+# Seleccionem el directori amb les imatges
+for folder_name in subdirectories:
+    if folder_name != 'split_images':
+        images_folder = folder_name # si hi ha diferents datasets a data, canviar folder_name pel nom de la carpeta amb les imatges desitjades
+        break
+else:
+    print("No s'ha trobat cap directori amb imatges dins de data")
+    exit()
+
+# Construïm els diferents paths amb les imatges
+input_path = os.path.join(data_dir, images_folder)
+output_path = os.path.join(data_dir, 'split_images')
 
 use_gpu = torch.cuda.is_available()
 if not os.path.exists(output_path):
@@ -28,8 +45,11 @@ criterion = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=0.0)
 scheduler = lr_scheduler.LinearLR(optimizer, start_factor=1.0, end_factor=0.5, total_iters=30)
 
-train_path = r'C:\Users\genis\Documents\uni\Tercer\SEMESTRE 2\Xarxes\Proyecto Nuestro\data\random_images\split_images\train'
-val_path = r'C:\Users\genis\Documents\uni\Tercer\SEMESTRE 2\Xarxes\Proyecto Nuestro\data\random_images\split_images\val'
+# Directoris del train, el validation i on es guardarà el model entrenat
+split_images_folder = os.path.join(data_dir, images_folder, 'split_images')
+train_path = os.path.join(split_images_folder, 'train')
+val_path = os.path.join(split_images_folder, 'val')
+model_saved_path = 'checkpoints/model_random.pt'
 
 save_images = True
 best_losses = 1e10
@@ -37,7 +57,7 @@ epochs = 15
 
 # Entrenament
 train_transforms = transforms.Compose([transforms.RandomResizedCrop(224), transforms.RandomHorizontalFlip()])
-train_imagefolder = Convert2Grayscale(train_path , train_transforms)
+train_imagefolder = Convert2Grayscale(train_path, train_transforms)
 train_loader = torch.utils.data.DataLoader(train_imagefolder, batch_size=64, shuffle=True)
 
 # Validació
@@ -84,14 +104,13 @@ for epoch in range(epochs):
         val_loss = validate(val_loader, model, criterion, save_images, epoch, epochs)
         scheduler.step()
         losses["val"].append(val_loss)
-    # Guardem a la caprta checkpoints l'estat del model
+    # Guardem a la carpeta checkpoints l'estat del model
     if val_loss < best_losses:
         best_losses = val_loss
         torch.save(model.state_dict(), 'checkpoints/model_random-epoch-{}-losses-{:.3f}.pth'.format(epoch + 1, val_loss))
 
 # Guardem el model
-path = "checkpoints/model_random.pt"
-torch.save(model, path)
+torch.save(model, model_saved_path)
 
 # Importar el model entrenat
 '''
