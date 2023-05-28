@@ -1,5 +1,3 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/sPgOnVC9)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=11118680&assignment_repo_type=AssignmentRepo)
 # XNAP-Colorització d'imatges en blanc i negre utilitzant CNN
 
 ##  Introducció
@@ -87,29 +85,33 @@ A més, tenim la carpeta models amb el fitxer:
 ## Execució del programa
 
 ### Executar models per entrenar
-**Per tal de poder entrenar un model amb un dataset particular és important seguir aquestes instruccions**: 
+>Si dins la carpeta `data` es té **només una carpeta** amb les imatges simplement fer: `python main.py`.
 
-Primerament entrar al fitxer main i modificar les següents variables:
-- **input_path:** Aneu al lloc on us heu descarregat el projecte, un cop allà obriu la carpeta del projecte, obriu la carpeta 'data' i dins de data escolliu la carpeta d'imatges amb la que voleu executar el treball. Un cop escollida, copieu el path i l'enganxeu en aquesta variable.
-- **output_path:** En aquest cas només haureu de canviar 'food_images' del path pel nom de la carpeta que anteriorment heu escollit.
+>Si dins la carpeta `data` hi ha **més d'una carpeta amb diferents imatges** seguir les instruccions següents:
+>1. Anar al fitxer `main.py`
+>2. Canviar a la línia 28 la variable *folder_name* per '<nom_directori>', on <nom_directori> és el nom del directori amb les imatges amb les quals es vol entrenar el model.
+>3. Només falta executar el main fent:`python main.py`.
 
-Més avall del codi en la part d'opcions haureu de modificar les variables train_path i val_path.
-Per aquestes variables haureu d'anar al projecte obrir la carpeta data a continuació l'arxiu d'imatges que esteu executant, obrir split_images i depenent si és per la variable train o val obrir cada carpeta seva respectiva copiar el path a cada variable corresponent.
-
-Per ultim modifique la variable model_save_path per tal de posar el nom de com vodreu guardar el model importat un cop entrenat.
-
-Amb això ja estarà tot llest per executar i entrenar el model. Per fer-ho escrivim al terminal:
-```
-python main.py
+**Exemple: volem entrenar el model amb les imatges de *random_images* i tenim la següent estructura amb tres directoris diferents:**
 
 ```
-Un cop acabat el model d’entrenat es guardarà dins la carpeta checkpoints.
+├── ...
+├── data                 
+│   ├── food_images      
+│   ├── faces_images   
+│   └── random_images              
+└── ...
+```
+Anem al fitxer `main.py` i canviem la línia 28. En aquest cas la línia sencera quedaria: `images_folder = 'random_images'`.
 
+Un cop acabat s'ha entrenat el model es guardarà dins la carpeta `checkpoints`.
 ### Executar models ja entrenats 
+Per executar un model ja entrenat seguir les següents instruccions:
+1. Anar a l'arxiu `main.py`
+2. Descomentar les últimes línes de codi (línies 116 a 125)
+3. En la comanda de *load_state_dic* canviar el format del path `checkpoints/NOM_MODEL.pth` on NOM_MODEL és el nom del model que es vulgui carregar.
 
-
-Haureu de descomentar les últimes línies de codi i en la comanda de load_state_dic canviar el format del path 'checkpoints/NOM_MOEL.pth' i posar en comptes de NOM_MODEL posar el nom del model que voleu carregar. Per mirar el nom dels models haureu d'anar a la carpeta checkpoints i escollir-ne un.
-Per tal de facilitar l’entendiment dels noms tots els models segueixen l’estructura de Nom_imatges_entrenament-epoch-Nom_de_epoch-losses-Valor_loss.pth 
+Tots els models segueixen l’estructura de `<model>-epoch-<#epoch>-losses-<valor_loss>.pth`, a més a més, si teniu qualsevol dubte podeu anar a la carpeta `checkpoints` i allà hi seran tots els models per consultar els seus noms.
 
 
 
