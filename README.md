@@ -34,8 +34,8 @@ Per clonar el directori en local, dirigiu-vos al directori on es vulgui guardar 
 git clone https://github.com/DCC-UAB/xnap-project-matcad_grup_1.git
 ```
 
-### Carregar les imatges
-Per fer aquest treball ens hem basat en 3 datasets d'imatges, en cas de voler tractar amb models ja entrenats haureu d'anar als següents links, descarregar-vos el dataset d'imatges i carregar-lo dins de la carpeta `data`.
+#### Carregar les imatges
+Per fer aquest treball ens hem basat en 3 datasets d'imatges, en cas de voler tractar amb models ja entrenats haureu d'anar als següents links, descarregar-vos el dataset d'imatges i crear la carpeta `data` i carregar les imatges dins de la carpeta.
 
 - [Random](https://uofi.app.box.com/s/1cpolrtkckn4hxr1zhmfg0ln9veo6jpl)
 - [Food](https://drive.google.com/file/d/1k_UvYzdrHbphW4UcbDb9jWB0ZQIAGEAo/view) 
